@@ -16,9 +16,13 @@ export function setupExtended():()=>void {
  const media=window.matchMedia('(prefers-reduced-motion: reduce)');let context:gsap.Context|undefined;
  const canvases=Array.from(document.querySelectorAll<HTMLCanvasElement>('.beat-canvas'));
  const progresses=new Map<HTMLCanvasElement,number>();
+ const visible=new Map<HTMLCanvasElement,boolean>();
  const random=seedRandom(715);const grains=Array.from({length:650},()=>({x:random(),y:random(),r:random(),a:random()*Math.PI*2}));
  function paint(canvas:HTMLCanvasElement,p:number):void {
-  progresses.set(canvas,p);const c=canvas.getContext('2d');if(!c)return;
+  progresses.set(canvas,p);
+  // These grinding/bloom scenes only pin while near the viewport, so skip the per-grain draw work otherwise.
+  if(visible.get(canvas)===false)return;
+  const c=canvas.getContext('2d');if(!c)return;
   const w=canvas.clientWidth,h=canvas.clientHeight,dpr=Math.min(devicePixelRatio||1,2);
   if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
   c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
@@ -47,6 +51,14 @@ export function setupExtended():()=>void {
   }
  }
  const observer=new ResizeObserver(()=>canvases.forEach(c=>paint(c,progresses.get(c)??0)));canvases.forEach(c=>observer.observe(c));
+ const visibility=new IntersectionObserver(entries=>{
+  for(const entry of entries){
+   const canvas=entry.target as HTMLCanvasElement;
+   visible.set(canvas,entry.isIntersecting);
+   if(entry.isIntersecting)paint(canvas,progresses.get(canvas)??0);
+  }
+ },{rootMargin:'60% 0px'});
+ canvases.forEach(c=>visibility.observe(c));
  // Media is optional and absent by default. No placeholder downloads or fabricated URLs.
  const filmCleanups:(()=>void)[]=[];
  for(const entry of filmAssets){
@@ -97,5 +109,5 @@ export function setupExtended():()=>void {
   gsap.killTweensOf(ritual);gsap.to(ritual,{backgroundColor:d.bg,color:d.ink,duration:media.matches?0:.45,ease:'power2.out'});
  }
  buttons.forEach(b=>b.addEventListener('click',choose));
- return ()=>{context?.revert();observer.disconnect();media.removeEventListener('change',build);buttons.forEach(b=>b.removeEventListener('click',choose));gsap.killTweensOf(ritual);filmCleanups.forEach(fn=>fn());};
+ return ()=>{context?.revert();observer.disconnect();visibility.disconnect();media.removeEventListener('change',build);buttons.forEach(b=>b.removeEventListener('click',choose));gsap.killTweensOf(ritual);filmCleanups.forEach(fn=>fn());};
 }

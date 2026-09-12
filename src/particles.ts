@@ -1,3 +1,4 @@
+import gsap from 'gsap';
 import { chapters, type Atmosphere } from './chapters.js';
 import { clamp, deviceScale, lerp, mixColor, particleBudget, rgba, seedRandom } from './math.js';
 interface Particle { x: number; y: number; seed: number; size: number; phase: number; }
@@ -10,14 +11,13 @@ export class ParticleSystem {
   private height = 1;
   private mobile = false;
   private phase = 0;
-  private frame = 0;
-  private previous = 0;
+  private running = false;
   private enabled = true;
   private scene: Atmosphere = chapters[0].palette;
   private darkness = 0;
   private progress = 0;
   private readonly observer: ResizeObserver;
-  private readonly onVisibility = () => { this.previous=0; if(document.hidden) this.stop(); else this.start(); };
+  private readonly onVisibility = () => { if(document.hidden) this.stop(); else this.start(); };
   constructor(private readonly canvas: HTMLCanvasElement) {
     const ctx=canvas.getContext('2d',{alpha:false});
     if(!ctx) throw new Error('Canvas 2D is not supported.');
@@ -45,14 +45,12 @@ export class ParticleSystem {
     this.canvas.width=Math.round(this.width*dpr); this.canvas.height=Math.round(this.height*dpr);
     this.ctx.setTransform(dpr,0,0,dpr,0,0); this.draw(0);
   }
-  private start(): void { if(!this.enabled || this.frame || document.hidden) return; this.previous=0;this.frame=requestAnimationFrame(this.tick); }
-  private stop(): void {cancelAnimationFrame(this.frame);this.frame=0;}
-  private readonly tick=(time:number):void=>{
-    this.frame=0;
-    const dt=this.previous?Math.min((time-this.previous)/1000,0.04):0;this.previous=time;
-    this.draw(dt);this.startFrame();
+  /** Shares GSAP's single rAF ticker rather than running a second animation loop. */
+  private start(): void { if(!this.enabled || this.running || document.hidden) return; this.running=true;gsap.ticker.add(this.tick); }
+  private stop(): void { if(!this.running) return; this.running=false;gsap.ticker.remove(this.tick); }
+  private readonly tick=(_time:number,deltaMs:number):void=>{
+    this.draw(Math.min(deltaMs/1000,0.04));
   };
-  private startFrame():void { if(this.enabled && !document.hidden) this.frame=requestAnimationFrame(this.tick); }
   private background():void {
     const c=this.ctx,s=this.scene,w=this.width,h=this.height;
     const gradient=c.createLinearGradient(0,0,0,h);

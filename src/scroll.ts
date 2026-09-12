@@ -19,11 +19,16 @@ export function setupScroll(particles:ParticleSystem|null):StoryController {
  const chapterNumber=document.querySelector<HTMLElement>('#journey-number')!;
  const band=document.querySelector<HTMLElement>('.marquee-band')!;
  const outro=document.getElementById('outro')!;
+ const small=window.matchMedia('(max-width:767px)');
  let reduced=media.matches,paused=false,disposed=false;
  let bindings:Binding[]=[],ranges:{start:number;end:number}[]=[];
  let animation:gsap.Context|undefined,decoration:gsap.Context|undefined;
  let travel:gsap.core.Tween|undefined,refreshFrame=0;
  let outroTop=Infinity,bandTop=Infinity,bandHeight=1;
+ // A single flag coalesces every native 'scroll' event into one sync() per rendered frame.
+ let dirty=false;
+ const requestSync=()=>{dirty=true;};
+ const flush=()=>{if(dirty){dirty=false;sync();}};
  function sync():void {
   if(!ranges.length)return;
   const y=window.scrollY;
@@ -65,10 +70,11 @@ export function setupScroll(particles:ParticleSystem|null):StoryController {
   animation=gsap.context(()=>{
    elements.forEach((element,index)=>{
     if(reduced){
-     const trigger=ScrollTrigger.create({trigger:element,start:'top center',end:'bottom center',onUpdate:sync});bindings.push({element,trigger});return;
+     const trigger=ScrollTrigger.create({trigger:element,start:'top center',end:'bottom center'});bindings.push({element,trigger});return;
     }
-    const lengths=[130,230,240,250,170];
-    const tl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{id:ids[index],trigger:element,start:'top top',end:`+=${lengths[index]}%`,pin:true,scrub:true,invalidateOnRefresh:true,anticipatePin:1,onUpdate:sync}});
+    // Shorter pins on small screens keep scroll distance reasonable without changing the animation itself.
+    const lengths=small.matches?[95,165,170,175,120]:[130,230,240,250,170];
+    const tl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{id:ids[index],trigger:element,start:'top top',end:`+=${lengths[index]}%`,pin:true,scrub:true,invalidateOnRefresh:true,anticipatePin:1}});
     if(index===0){
      tl.to('.word-bean',{xPercent:-110,rotation:-8,duration:1},0).to('.word-cup',{xPercent:100,rotation:8,duration:1},0).to('.hero-note',{opacity:0,duration:.2},.1);
      tl.fromTo('.hero-frame',{clipPath:'inset(8% 5% 8% 5% round 44%)'},{clipPath:'inset(-2% -2% -2% -2% round 0%)',duration:.7},0);
@@ -112,11 +118,12 @@ export function setupScroll(particles:ParticleSystem|null):StoryController {
  }
  const click=()=>{paused=!paused;updateMotion();};
  const change=()=>{stopTravel();build();};
- window.addEventListener('scroll',sync,{passive:true});window.addEventListener('wheel',stopTravel,{passive:true});window.addEventListener('touchstart',stopTravel,{passive:true});
- document.addEventListener('keydown',key);document.addEventListener('click',navigate);button.addEventListener('click',click);media.addEventListener('change',change);
+ window.addEventListener('scroll',requestSync,{passive:true});window.addEventListener('wheel',stopTravel,{passive:true});window.addEventListener('touchstart',stopTravel,{passive:true});
+ gsap.ticker.add(flush);
+ document.addEventListener('keydown',key);document.addEventListener('click',navigate);button.addEventListener('click',click);media.addEventListener('change',change);small.addEventListener('change',change);
  ScrollTrigger.addEventListener('refresh',measure);build();
  document.fonts.ready.then(()=>{if(!disposed)refreshFrame=requestAnimationFrame(()=>ScrollTrigger.refresh());});
  const initial=ids.indexOf(location.hash.slice(1));
  if(initial>=0){const fraction=initial===4?.7:initial===0?0:.35;window.scrollTo(0,reduced?elements[initial].offsetTop-110:ranges[initial].start+(ranges[initial].end-ranges[initial].start)*fraction);sync();}
- return {setPaused(value:boolean){paused=value;updateMotion();},destroy(){cinema.destroy();disposed=true;stopTravel();cancelAnimationFrame(refreshFrame);ScrollTrigger.removeEventListener('refresh',measure);decoration?.revert();animation?.revert();window.removeEventListener('scroll',sync);window.removeEventListener('wheel',stopTravel);window.removeEventListener('touchstart',stopTravel);document.removeEventListener('keydown',key);document.removeEventListener('click',navigate);button.removeEventListener('click',click);media.removeEventListener('change',change);}};
+ return {setPaused(value:boolean){paused=value;updateMotion();},destroy(){cinema.destroy();disposed=true;stopTravel();cancelAnimationFrame(refreshFrame);gsap.ticker.remove(flush);ScrollTrigger.removeEventListener('refresh',measure);decoration?.revert();animation?.revert();window.removeEventListener('scroll',requestSync);window.removeEventListener('wheel',stopTravel);window.removeEventListener('touchstart',stopTravel);document.removeEventListener('keydown',key);document.removeEventListener('click',navigate);button.removeEventListener('click',click);media.removeEventListener('change',change);small.removeEventListener('change',change);}};
 }

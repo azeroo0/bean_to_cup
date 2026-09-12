@@ -7,5 +7,5 @@ export function seedRandom(seed: number): () => number {
   return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let n = Math.imul(seed ^ seed >>> 15, 1 | seed); n = n + Math.imul(n ^ n >>> 7, 61 | n) ^ n; return ((n ^ n >>> 14) >>> 0) / 4294967296; };
 }
 export const deviceScale = (ratio: number): number => Math.min(2, Math.max(1, ratio || 1));
-export const particleBudget = (count: number, mobile: boolean): number => count <= 2 ? count : Math.max(2, count * (mobile ? 0.6 : 1));
+export const particleBudget = (count: number, mobile: boolean): number => count <= 2 ? count : Math.max(2, count * (mobile ? 0.42 : 1));
 export const roastingTemperature = (progress: number): number => Math.round(lerp(20, 200, progress));

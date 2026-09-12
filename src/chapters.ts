@@ -22,4 +22,4 @@ export function blendAtmosphere(from: Atmosphere, to: Atmosphere, progress: numb
   for (const key of numericKeys) result[key] = lerp(from[key],to[key],t);
   return result;
 }
-export const creator = { name: 'Your Name', github: 'https://github.com/', email: 'hello@example.com' };
+export const creator = { name: 'Ayoung Yoon', email: 'emily021209@gmail.com' };

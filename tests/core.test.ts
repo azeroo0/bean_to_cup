@@ -21,8 +21,8 @@ test('temperature tracks both directions and clamps overscroll',()=>{
   assert.equal(roastingTemperature(0),20);assert.equal(roastingTemperature(.5),110);assert.equal(roastingTemperature(1),200);
   assert.equal(roastingTemperature(-1),20);assert.equal(roastingTemperature(2),200);
 });
-test('mobile scales pools to sixty percent while preserving two final plumes and capping DPR',()=>{
-  assert.equal(particleBudget(150,true),90);assert.equal(particleBudget(150,false),150);assert.equal(particleBudget(2,true),2);
+test('mobile scales pools to forty-two percent while preserving two final plumes and capping DPR',()=>{
+  assert.equal(particleBudget(150,true),63);assert.equal(particleBudget(150,false),150);assert.equal(particleBudget(2,true),2);
   assert.equal(deviceScale(3),2);assert.equal(deviceScale(1.5),1.5);
 });
 test('static particle seeds are repeatable',()=>{
