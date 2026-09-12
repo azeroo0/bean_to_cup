@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2F4A2B" />
+  <meta name="description" content="Bean to Cup. Four chapters, one quiet ritual. Follow a coffee seed through harvest, roasting, brewing, and the first sip." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <title>BEAN TO CUP — A story in four chapters</title>
+</head>
+<body>
+  <a class="skip-link" href="#harvest">Skip to the story</a>
+  <canvas id="atmosphere" aria-hidden="true"></canvas>
+  <div class="reading-shade" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="wordmark" href="#hero" aria-label="Bean to Cup, beginning">bean<span> / </span>cup<span class="wordmark-dot">.</span></a>
+    <nav aria-label="Story chapters">
+      <a href="#harvest"><span>01</span>Harvest</a>
+      <a href="#roasting"><span>02</span>Roasting</a>
+      <a href="#brewing"><span>03</span>Brewing</a>
+      <a href="#finished"><span>04</span>Finished</a>
+    </nav>
+    <button id="motion-toggle" type="button" aria-pressed="false">Pause motion <span aria-hidden="true">Ⅱ</span></button>
+  </header>
+  <div id="cinema" aria-hidden="true">
+    <img id="foreground-branch" src="/assets/cherry.png" alt="" width="1024" height="1024" />
+    <div id="bean-swarm"><img src="/assets/bean.png" alt="" class="swarm-bean" decoding="async" /><img src="/assets/bean.png" alt="" class="swarm-bean" decoding="async" /><img src="/assets/bean.png" alt="" class="swarm-bean" decoding="async" /><img src="/assets/bean.png" alt="" class="swarm-bean" decoding="async" /><img src="/assets/bean.png" alt="" class="swarm-bean" decoding="async" /><img src="/assets/bean.png" alt="" class="swarm-bean" decoding="async" /><img src="/assets/bean.png" alt="" class="swarm-bean" decoding="async" /><img src="/assets/bean.png" alt="" class="swarm-bean" decoding="async" /><img src="/assets/bean.png" alt="" class="swarm-bean" decoding="async" /></div><div id="iris"></div><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+    <div class="object-position" id="object-position"><div class="object-spin" id="object-spin">
+      <img class="story-object cherry-object" id="cherry-object" src="/assets/cherry.png" alt="" width="1024" height="1024" fetchpriority="high" />
+      <img class="story-object bean-object" id="bean-object" src="/assets/bean.png" alt="" width="1024" height="1024" />
+      <img class="story-object cup-object" id="cup-object" src="/assets/cup.png" alt="" width="1024" height="1024" />
+    </div></div>
+    <div id="water-thread"></div><div id="coffee-drop"></div>
+    <div id="ripple"><span></span><span></span><span></span></div>
+    <div class="cinema-vignette"></div>
+  </div>
+  <div class="journey-rail" aria-hidden="true"><span id="journey-number">00</span><div><span id="journey-progress"></span></div><span>04</span></div>
+  <main id="story">
+    <section id="hero" class="hero scene" aria-labelledby="hero-title">
+      <div class="hero-frame" aria-hidden="true"><span>A SMALL WORLD, WAITING TO OPEN.</span></div><div class="hero-topline"><span>A COFFEE STORY, IN FOUR ACTS</span><span>SCROLL TO TRANSFORM</span></div>
+      <h1 id="hero-title" tabindex="-1"><span class="hero-word word-bean">BEAN</span><span class="hero-word word-cup"><i>to</i> CUP<span class="hero-period">.</span></span></h1>
+      <p class="hero-note">A little seed.<br />A whole world within.</p>
+      <div class="hero-bottom"><a class="scroll-prompt" href="#harvest"><span>FOLLOW THE JOURNEY</span><span class="scroll-arrow" aria-hidden="true">↓</span></a><span class="hero-bottom-note">GROWN WITH TIME.<br />MADE WITH CARE.</span><span>VOL. 003 / FOLLOW THE FEELING</span></div>
+    </section>
+    <section id="harvest" class="chapter chapter-harvest scene" aria-labelledby="harvest-title">
+      <div class="chapter-top"><span>01 / THE ORIGIN</span><span>EARTH → SEED</span></div>
+      <div class="chapter-copy"><p class="eyebrow">It begins with the earth.</p><div class="title-mask"><h2 id="harvest-title" tabindex="-1">Small seed.<br /><i>Big beginning.</i></h2></div><p class="chapter-description">A season of sun, held in a single cherry.<br />Picked by hand. Ready to become something more.</p></div>
+      <div class="specimen-label"><span>COFFEA / THE FRUIT</span><span class="label-line"></span></div>
+      <div class="harvest-panorama" aria-hidden="true"><span>SOIL.</span><span>SUN.</span><span>SOUL.</span></div><div class="field-coordinate" aria-hidden="true">A SEASON, CONDENSED.<br />ONE CHERRY AT A TIME.</div>
+      <div class="chapter-bottom"><span>HARVEST / ROOTED IN PATIENCE</span><div class="chapter-meter" aria-hidden="true"><span></span></div><span>01 — 04</span></div>
+    </section>
+    <section id="roasting" class="chapter chapter-roasting scene" aria-labelledby="roasting-title">
+      <div class="chapter-top"><span>02 / THE TRANSFORMATION</span><span>SEED → AROMA</span></div>
+      <div class="chapter-copy"><p class="eyebrow">A little fire changes everything.</p><div class="title-mask"><h2 id="roasting-title" tabindex="-1">Born of<br /><i>fire.</i></h2></div><p class="chapter-description">Heat wakes what the earth has hidden.<br />The same seed. An entirely new character.</p></div>
+      <p class="passing-word roast-word" aria-hidden="true">TURN UP THE HEAT.</p>
+      <div class="temperature"><span class="eyebrow">THE TRANSFORMATION</span><div aria-hidden="true"><span id="temperature-value">20</span><span class="temperature-unit">°C</span></div><span class="sr-only">Illustrative roasting temperature, from 20 to 200 degrees Celsius.</span><span class="temperature-caption">ILLUSTRATIVE TEMPERATURE</span></div>
+      <div class="chapter-bottom"><span>ROASTING / WARMTH BECOMES CHARACTER</span><div class="chapter-meter" aria-hidden="true"><span></span></div><span>02 — 04</span></div>
+    </section>
+    <section class="marquee-band" aria-label="Next chapter: Brewing"><div class="marquee-track" aria-hidden="true"><div>JUST ADD WATER <i>—</i> JUST ADD WATER <i>—</i> </div><div>JUST ADD WATER <i>—</i> JUST ADD WATER <i>—</i> </div></div><p>FROM FIRE TO FLOW / 03</p></section>
+    <section id="brewing" class="chapter chapter-brewing scene" aria-labelledby="brewing-title">
+      <div class="chapter-top"><span>03 / THE RITUAL</span><span>AROMA → ESSENCE</span></div>
+      <div class="chapter-copy"><p class="eyebrow">Water finds its way.</p><div class="title-mask"><h2 id="brewing-title" tabindex="-1">Let it<br /><i>flow.</i></h2></div><p class="chapter-description">A slow pour. A quiet bloom.<br />Drop by drop, the whole story comes through.</p></div>
+      <div class="pour-words" aria-hidden="true"><span>POUR.</span><span>BLOOM.</span><span>BECOME.</span></div>
+      <div class="chapter-bottom"><span>BREWING / LET TIME DO ITS WORK</span><div class="chapter-meter" aria-hidden="true"><span></span></div><span>03 — 04</span></div>
+    </section>
+    <section id="finished" class="chapter chapter-finished scene" aria-labelledby="finished-title">
+      <div class="chapter-top"><span>04 / THE MOMENT</span><span>ESSENCE → EVERYDAY</span></div>
+      <div class="chapter-copy"><p class="eyebrow">The world can wait.</p><div class="title-mask"><h2 id="finished-title" tabindex="-1">Worth<br /><i>the wait.</i></h2></div><p class="chapter-description">All that earth. All that time.<br />Now, a little warmth between your hands.</p></div>
+      <div class="cup-caption"><span>ONE SEED. FOUR TRANSFORMATIONS.</span><span>YOUR MOMENT.</span></div>
+      <div class="chapter-bottom"><span>FINISHED / TAKE A BREATH. TAKE A SIP.</span><div class="chapter-meter" aria-hidden="true"><span></span></div><span>04 — 04</span></div>
+    </section>
+    <footer id="outro" class="outro">
+      <div class="outro-top"><span>THE END OF THE STORY. THE START OF YOUR DAY.</span><a href="#hero">BACK TO THE BEGINNING ↗</a></div>
+      <p class="outro-title">Good things<br />take <i>their time.</i></p>
+      <div class="outro-bottom"><div><p class="eyebrow">BUILT WITH</p><ul class="tech-badges"><li>TypeScript</li><li>Vite</li><li>GSAP</li><li>Canvas API</li></ul></div><div class="creator"><p id="creator-name">Built by Your Name</p><div><a id="github-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a id="email-link" href="mailto:hello@example.com">Email ↗</a></div></div></div>
+      <div class="outro-colophon"><span>BEAN TO CUP © 2026</span><span>AN INDEPENDENT CREATIVE CODING STUDY</span></div>
+    </footer>
+  </main>
+  <div id="loader" class="loader" role="dialog" aria-modal="true" aria-labelledby="loader-caption" hidden><span class="loader-mark">BEAN / CUP</span><div><span id="loader-count" aria-hidden="true">0%</span><p id="loader-caption">Good things are worth a moment.</p></div><button id="loader-skip" type="button">SKIP INTRO ↗</button></div>
+  <noscript><p class="noscript-note">JavaScript is off. The story is still here; scroll to read all four chapters.</p></noscript>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
