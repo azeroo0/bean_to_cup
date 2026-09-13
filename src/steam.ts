@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import { clamp } from './math.js';
 
-/** Cup-local steam: one batched ribbon path, with a shared height fade. */
 export class CupSteam {
  private canvas=document.createElement('canvas');
  private ctx:CanvasRenderingContext2D|null;
@@ -67,7 +66,6 @@ export class CupSteam {
   for(let i=0;i<count;i++){
    const offset=(i-(count-1)/2)*spread;
    const ribbonHeight=height*(.87+i*.055);
-   // Ascending phase makes bends travel up the ribbon; widening edges dissolve above it.
    for(let side=0;side<2;side++)for(let j=0;j<=40;j++){
     const q=side===0?j/40:1-j/40;
     const wave=(Math.sin(q*8-this.phase*.7+i*2.3)+.35*Math.sin(q*15-this.phase*.43+i))*q*18;

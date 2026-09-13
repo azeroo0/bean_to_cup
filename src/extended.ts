@@ -20,7 +20,6 @@ export function setupExtended():()=>void {
  const random=seedRandom(715);const grains=Array.from({length:650},()=>({x:random(),y:random(),r:random(),a:random()*Math.PI*2}));
  function paint(canvas:HTMLCanvasElement,p:number):void {
   progresses.set(canvas,p);
-  // These grinding/bloom scenes only pin while near the viewport, so skip the per-grain draw work otherwise.
   if(visible.get(canvas)===false)return;
   const c=canvas.getContext('2d');if(!c)return;
   const w=canvas.clientWidth,h=canvas.clientHeight,dpr=Math.min(devicePixelRatio||1,2);
@@ -59,7 +58,6 @@ export function setupExtended():()=>void {
   }
  },{rootMargin:'60% 0px'});
  canvases.forEach(c=>visibility.observe(c));
- // Media is optional and absent by default. No placeholder downloads or fabricated URLs.
  const filmCleanups:(()=>void)[]=[];
  for(const entry of filmAssets){
   if(!entry.src)continue;const section=document.getElementById(entry.section);if(!section)continue;

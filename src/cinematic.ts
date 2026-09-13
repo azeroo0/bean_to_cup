@@ -15,7 +15,6 @@ export const choreography:Keyframe[][]=[
  [{at:0,pose:roastEnd},{at:.25,pose:pose({x:.5,y:.38,scale:.45,rotation:320,cherry:0,bean:1,water:1,orbit:0})},{at:.6,pose:pose({x:.5,y:.56,scale:.12,rotation:340,cherry:0,bean:.5,drop:1,dropY:.56,dropScale:3,water:1,orbit:0})},{at:.8,pose:pose({x:.5,y:.5,scale:.12,cherry:0,drop:1,dropY:.5,dropScale:18,portal:.3,orbit:0})},{at:1,pose:brewEnd}],
  [{at:0,pose:brewEnd},{at:.12,pose:pose({x:.5,y:.5,scale:4.8,cherry:0,cup:1,ripple:1,orbit:0,portal:1})},{at:.27,pose:pose({x:.5,y:.5,scale:3.2,cherry:0,cup:1,ripple:.8,orbit:0,portal:1})},{at:.62,pose:pose({x:.68,y:.54,scale:1.35,cherry:0,cup:1,ripple:0,orbit:0,portal:1})},{at:1,pose:pose({x:.68,y:.54,scale:1.35,cherry:0,cup:1,ripple:0,orbit:0,portal:1})}]
 ];
-/** Geometry is a pure function of scroll. Reverse scroll reproduces identical poses. */
 export function samplePose(scene:number,progress:number):Pose {
  const frames=choreography[Math.max(0,Math.min(4,scene))];const p=clamp(progress);
  let right=frames.findIndex(frame=>frame.at>=p);if(right<=0)return {...frames[0].pose};

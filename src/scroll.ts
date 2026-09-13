@@ -25,7 +25,6 @@ export function setupScroll(particles:ParticleSystem|null):StoryController {
  let animation:gsap.Context|undefined,decoration:gsap.Context|undefined;
  let travel:gsap.core.Tween|undefined,refreshFrame=0;
  let outroTop=Infinity,bandTop=Infinity,bandHeight=1;
- // A single flag coalesces every native 'scroll' event into one sync() per rendered frame.
  let dirty=false;
  const requestSync=()=>{dirty=true;};
  const flush=()=>{if(dirty){dirty=false;sync();}};
@@ -35,7 +34,6 @@ export function setupScroll(particles:ParticleSystem|null):StoryController {
   let index=0;for(let i=0;i<ranges.length;i++)if(y>=ranges[i].start-1)index=i;
   const r=ranges[index],p=clamp((y-r.start)/Math.max(1,r.end-r.start));
   const chapter=Math.max(0,index-1);
-  // Palette reaches the destination early enough for each main transformation to read.
   const blend=reduced?1:clamp(p/.65);
   const scene=index<=1?chapters[0].palette:blendAtmosphere(chapters[Math.max(0,chapter-1)].palette,chapters[chapter].palette,blend);
   const bp=(y+window.innerHeight*.5-bandTop)/bandHeight;
@@ -72,7 +70,6 @@ export function setupScroll(particles:ParticleSystem|null):StoryController {
     if(reduced){
      const trigger=ScrollTrigger.create({trigger:element,start:'top center',end:'bottom center'});bindings.push({element,trigger});return;
     }
-    // Shorter pins on small screens keep scroll distance reasonable without changing the animation itself.
     const lengths=small.matches?[95,165,170,175,120]:[130,230,240,250,170];
     const tl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{id:ids[index],trigger:element,start:'top top',end:`+=${lengths[index]}%`,pin:true,scrub:true,invalidateOnRefresh:true,anticipatePin:1}});
     if(index===0){

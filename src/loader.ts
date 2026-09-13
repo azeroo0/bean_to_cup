@@ -1,10 +1,9 @@
 import gsap from 'gsap';
 const SESSION_KEY='bean-to-cup.intro';
-/** Decorative intro, not a claim about network transfer progress. */
 export function playLoader(reduced: boolean): Promise<void> {
   const loader=document.querySelector<HTMLElement>('#loader')!;
-  let seen=false;try{seen=sessionStorage.getItem(SESSION_KEY)==='1';}catch{/* Optional storage. */}
-  if(seen || reduced){try{sessionStorage.setItem(SESSION_KEY,'1');}catch{/* Optional storage. */}loader.hidden=true;return Promise.resolve();}
+  let seen=false;try{seen=sessionStorage.getItem(SESSION_KEY)==='1';}catch{}
+  if(seen || reduced){try{sessionStorage.setItem(SESSION_KEY,'1');}catch{}loader.hidden=true;return Promise.resolve();}
   return new Promise(resolve=>{
     const main=document.querySelector<HTMLElement>('#story')!;
     const header=document.querySelector<HTMLElement>('.site-header')!;
@@ -16,7 +15,7 @@ export function playLoader(reduced: boolean): Promise<void> {
     const media=window.matchMedia('(prefers-reduced-motion: reduce)');
     const finish=()=>{
       if(completed)return;completed=true;timeline.kill();
-      try{sessionStorage.setItem(SESSION_KEY,'1');}catch{/* Optional storage. */}
+      try{sessionStorage.setItem(SESSION_KEY,'1');}catch{}
       loader.hidden=true;main.inert=false;header.inert=false;document.body.style.overflow=oldOverflow;
       skip.removeEventListener('click',finish);document.removeEventListener('keydown',key);media.removeEventListener('change',motionChange);
       document.querySelector<HTMLElement>('#hero-title')?.focus({preventScroll:true});resolve();

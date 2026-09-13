@@ -15,7 +15,6 @@ export const chapters: Chapter[] = [
   { id: 'finished', palette: {top:[232,211,176],bottom:[246,235,215],particle:[123,93,63],count:2,vy:-7,secondaryVy:-7,sway:12,frequency:0.3,rx:8,ry:80,secondaryRx:8,secondaryRy:80,rotation:0,alphaTop:0.08,alphaBottom:0.2,blur:14,sun:0,heat:0,rain:0,paper:1,plume:1}}
 ];
 const numericKeys: (keyof Physics)[] = ['count','vy','secondaryVy','sway','frequency','rx','ry','secondaryRx','secondaryRy','rotation','alphaTop','alphaBottom','blur','sun','heat','rain','paper','plume'];
-/** Parameter-space interpolation: a single evolving simulation, never two faded scenes. */
 export function blendAtmosphere(from: Atmosphere, to: Atmosphere, progress: number): Atmosphere {
   const t = clamp(progress);
   const result = {...from,top:mixColor(from.top,to.top,t),bottom:mixColor(from.bottom,to.bottom,t),particle:mixColor(from.particle,to.particle,t)};
